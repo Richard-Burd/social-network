@@ -1,0 +1,51 @@
+redburd@ubuntu ~/Desktop/dev/4/social-network (master) $ npm run start
+
+
+redburd@ubuntu ~/Desktop/dev/4/social-network (master) $ sudo truffle compile // you shouldn't need this anymore
+
+redburd@ubuntu ~/Desktop/dev/4/social-network (master) $ truffle compile
+redburd@ubuntu ~/Desktop/dev/4/social-network (master) $ truffle migrate
+
+redburd@ubuntu ~/Desktop/dev/4/social-network (master) $ truffle console
+truffle(development)>......................................ENTER TRUFFLE
+
+truffle(development)> .exit
+redburd@ubuntu ~/Desktop/dev/4/social-network (master) $...EXIT TRUFFLE
+
+truffle(development)> SocialNetwork.deployed()
+TruffleContract {
+  constructor:
+   { [Function: TruffleContract]
+...et.al.
+
+// https://www.youtube.com/watch?v=nvw27RCTaEw&list=PLS5SEs8ZftgXDYtXZIhYBl18frMt2yWZW&index=7&t=771s
+// 32:30 / 2:45:07
+// we could do s.thing like this if we wanted to:
+truffle(development)> SocialNetwork.deployed().then((c) => { contract = c })
+
+// ...but we're gonna use the async await pattern because we're gonna use that heavily
+//  within the test suite when we write tests for this smart contract
+
+// so we're gonna do this:
+truffle(development)> contract = await SocialNetwork.deployed()
+undefined
+
+truffle(development)> contract
+TruffleContract {
+  constructor:
+   { [Function: TruffleContract]
+...et.al.
+
+truffle(development)> contract.address
+'0xf3FF9402F65F978e9883E99A1aF8a428C0383A68'
+
+// we can get the name of the contract, but we need to
+// wait for it so this is an async call:
+truffle(development)> name = await contract.name()
+undefined
+
+truffle(development)> name
+'dapp university social network'
+
+https://www.youtube.com/watch?v=nvw27RCTaEw&list=PLS5SEs8ZftgXDYtXZIhYBl18frMt2yWZW&index=7&t=771s
+Left off at: 34:56 / 2:45:07
