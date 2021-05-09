@@ -23,8 +23,9 @@ TruffleContract {
 // we could do s.thing like this if we wanted to:
 truffle(development)> SocialNetwork.deployed().then((c) => { contract = c })
 
-// ...but we're gonna use the async await pattern because we're gonna use that heavily
-//  within the test suite when we write tests for this smart contract
+// ...but we're gonna use the async await pattern because we're gonna use
+// that heavily within the test suite when we write tests for this smart
+// contract
 
 // so we're gonna do this:
 truffle(development)> contract = await SocialNetwork.deployed()

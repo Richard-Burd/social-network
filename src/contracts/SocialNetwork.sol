@@ -1,7 +1,7 @@
 pragma solidity ^0.5.0;
 
 contract SocialNetwork {
-  string public name; // state var that gets stored on the blockchain
+  string public name;
   string public age;
   string public sign;
 
