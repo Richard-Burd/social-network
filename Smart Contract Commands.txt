@@ -50,3 +50,4 @@ truffle(development)> name
 
 https://www.youtube.com/watch?v=nvw27RCTaEw&list=PLS5SEs8ZftgXDYtXZIhYBl18frMt2yWZW&index=7&t=771s
 Left off at: 34:56 / 2:45:07
+..
