@@ -14,9 +14,9 @@ contract('SocialNetwork', ([deployer, author, tipper]) => {
   // simple test to see if it was deployed to the blockchain
   let socialNetwork
 
-before(async () => {
-  socialNetwork = await SocialNetwork.deployed()
-})
+  before(async () => {
+    socialNetwork = await SocialNetwork.deployed()
+  })
 
 
   describe('deployment', async () => {
@@ -33,7 +33,7 @@ before(async () => {
     it('has a name', async () => {
       // socialNetwork = await SocialNetwork.deployed()...abstracted above^
       const name = await socialNetwork.name()
-      assert.equal(name, 'dapp university social network')
+      assert.equal(name, 'Dapp University Social Network')
     })
   })
 

@@ -27,22 +27,13 @@ contract SocialNetwork {
   );
 
   constructor() public {
-    name = "dapp university social network";
+    name = "Dapp University Social Network";
   }
 
-  // local variables have an _underscore
-  // by convention, but it is not necessary
   function createPost(string memory _content) public {
-    // Require valid content...this is a requirement function
-    // in solidity
-    /// this "bytes(_content)" code will take the content which is
-    /// a string and converts it into a bytes array; this just checks
-    /// the string to make sure it has some content in it before it
-    /// gets created...only if require = true will
-    /// the rest of the code will execute
+    // Require valid content
     require(bytes(_content).length > 0);
-
-
+    // Increment the post count
     postCount ++;
 
     // create the post
