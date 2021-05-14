@@ -1,4 +1,4 @@
-// import the being tested
+// import the thing being tested
 const SocialNetwork = artifacts.require('./SocialNetwork.sol')
 
 // Chai assertion library

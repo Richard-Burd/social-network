@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Web3 from 'web3'; // this is the thing that is depreciated:
+import Web3 from 'web3'; // this is the thing that is depreciated
 import logo from '../logo.png';
 import './App.css';
 import Navbar from './Navbar'
