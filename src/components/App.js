@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Web3 from 'web3';
+import Web3 from 'web3'; // this is the thing that is deprecated
 import Identicon from 'identicon.js';
 import './App.css';
 import SocialNetwork from '../abis/SocialNetwork.json'
@@ -16,57 +16,53 @@ class App extends Component {
   async loadWeb3() {
     if (window.ethereum) {
       window.web3 = new Web3(window.ethereum)
-      await window.ethereum.enable()
+      await window.ethereum.enable() // deprecated notice in browser...https://github.com/MetaMask/detect-provider... use: "await window.eth_requestAccounts"
     }
     else if (window.web3) {
       window.web3 = new Web3(window.web3.currentProvider)
     }
     else {
-      window.alert('Non-Ethereum browser detected. You should consider trying MetaMask!')
+      window.alert('Non-Ethereum browser detected.  You should consider MetaMask!')
     }
   }
 
   async loadBlockchainData() {
     const web3 = window.web3
-    // Load account
+    // load account
     const accounts = await web3.eth.getAccounts()
+    // console.log(accounts)
     this.setState({ account: accounts[0] })
     // Network ID
     const networkId = await web3.eth.net.getId()
+    // console.log(networkId)
     const networkData = SocialNetwork.networks[networkId]
-    if(networkData) {
+    if (networkData){
+      // console.log(networkId)
       const socialNetwork = web3.eth.Contract(SocialNetwork.abi, networkData.address)
-      this.setState({ socialNetwork })
+      //console.log(socialNetwork)
+      this.setState({ socialNetwork })  // ES6 shortcut for key: value that are the same: socialNetwork: socialNetwork
       const postCount = await socialNetwork.methods.postCount().call()
       this.setState({ postCount })
+      // console.log(postCount)
       // Load Posts
       for (var i = 1; i <= postCount; i++) {
         const post = await socialNetwork.methods.posts(i).call()
         this.setState({
-          posts: [...this.state.posts, post]
+          posts: [...this.state.posts, post] //ES6 spread operator
         })
       }
-      // Sort posts. Show highest tipped posts first
-      this.setState({
-        posts: this.state.posts.sort((a,b) => b.tipAmount - a.tipAmount )
-      })
-      this.setState({ loading: false})
+      // console.log({ posts: this.state.posts })
+      this.setState({ loading: false })
     } else {
       window.alert('SocialNetwork contract not deployed to detected network.')
     }
+    // Address
+    // ABI
   }
 
   createPost(content) {
     this.setState({ loading: true })
     this.state.socialNetwork.methods.createPost(content).send({ from: this.state.account })
-    .once('receipt', (receipt) => {
-      this.setState({ loading: false })
-    })
-  }
-
-  tipPost(id, tipAmount) {
-    this.setState({ loading: true })
-    this.state.socialNetwork.methods.tipPost(id).send({ from: this.state.account, value: tipAmount })
     .once('receipt', (receipt) => {
       this.setState({ loading: false })
     })
@@ -81,23 +77,21 @@ class App extends Component {
       posts: [],
       loading: true
     }
-
+    
     this.createPost = this.createPost.bind(this)
-    this.tipPost = this.tipPost.bind(this)
   }
 
   render() {
     return (
       <div>
         <Navbar account={this.state.account} />
-        { this.state.loading
-          ? <div id="loader" className="text-center mt-5"><p>Loading...</p></div>
-          : <Main
-              posts={this.state.posts}
-              createPost={this.createPost}
-              tipPost={this.tipPost}
-            />
-        }
+          { this.state.loading
+            ? <div id="loader" className="text-center mt-5"><p>Loading...</p></div>
+            : <Main
+                posts={this.state.posts}
+                createPost={this.createPost}
+              />
+          }
       </div>
     );
   }
