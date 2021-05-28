@@ -1,3 +1,5 @@
+left off at 11:52 / 20:56 here: https://www.youtube.com/watch?v=v7N7KLtrxIQ&list=PLS5SEs8ZftgXDYtXZIhYBl18frMt2yWZW&index=4&t=2s
+
 redburd@ubuntu ~/Desktop/dev/4/social-network (master) $ npm run start
 
 

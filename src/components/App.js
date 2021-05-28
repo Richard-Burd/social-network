@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import Web3 from 'web3'; // this is the thing that is depreciated
+import Web3 from 'web3'; // this is the thing that is deprecated
 import logo from '../logo.png';
 import './App.css';
+import SocialNetwork from '../abis/SocialNetwork.json'
 import Navbar from './Navbar'
 
 class App extends Component {
@@ -14,7 +15,7 @@ class App extends Component {
   async loadWeb3() {
     if(window.ethereum) {
       window.web3 = new Web3(window.ethereum)
-      await window.ethereum.enable() // depreciated notice in browser...https://github.com/MetaMask/detect-provider... use: "await window.eth_requestAccounts"
+      await window.ethereum.enable() // deprecated notice in browser...https://github.com/MetaMask/detect-provider... use: "await window.eth_requestAccounts"
     }
     else if (window.web3) {
       window.web3 = new Web3(window.web3.currentProvider)
@@ -28,13 +29,33 @@ class App extends Component {
     const web3 = window.web3
     // load account
     const accounts = await web3.eth.getAccounts()
+    // console.log(accounts)
     this.setState({ account: accounts[0]})
+    // Network ID
+    const networkId = await web3.eth.net.getId()
+    // console.log(networkId)
+    const networkData = SocialNetwork.networks[networkId]
+    if(networkData){
+      // console.log(networkId)
+      const socialNetwork = web3.eth.Contract(SocialNetwork.abi, networkData.address)
+      //console.log(socialNetwork)
+      this.setState({ socialNetwork })  // ES6 shortcut for key: value that are the same: socialNetwork: socialNetwork
+      const postCount = await socialNetwork.methods.postCount().call()
+      this.setState({ postCount })
+      console.log(postCount)
+    } else {
+      window.alert('SocialNetwork contract not deployed to detected network.')
+    }
+    // Address
+    // ABI
   }
 
   constructor(props) {
     super(props)
     this.state = {
-      account: ''
+      account: '',
+      socialNetwork: null,
+      postCount: 0
     }
   }
 
