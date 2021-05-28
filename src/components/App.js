@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import Web3 from 'web3'; // this is the thing that is deprecated
-import logo from '../logo.png';
+import Identicon from 'identicon.js';
 import './App.css';
 import SocialNetwork from '../abis/SocialNetwork.json'
 import Navbar from './Navbar'
@@ -42,7 +42,15 @@ class App extends Component {
       this.setState({ socialNetwork })  // ES6 shortcut for key: value that are the same: socialNetwork: socialNetwork
       const postCount = await socialNetwork.methods.postCount().call()
       this.setState({ postCount })
-      console.log(postCount)
+      // console.log(postCount)
+      // Load Posts
+      for (var i = 1; i <= postCount; i++) {
+        const post = await socialNetwork.methods.posts(i).call()
+        this.setState({
+          posts: [...this.state.posts, post] //ES6 spread operator
+        })
+      }
+      // console.log({ posts: this.state.posts })
     } else {
       window.alert('SocialNetwork contract not deployed to detected network.')
     }
@@ -55,7 +63,8 @@ class App extends Component {
     this.state = {
       account: '',
       socialNetwork: null,
-      postCount: 0
+      postCount: 0,
+      posts: []
     }
   }
 
@@ -65,27 +74,40 @@ class App extends Component {
         <Navbar account={this.state.account}/>
         <div className="container-fluid mt-5">
           <div className="row">
-            <main role="main" className="col-lg-12 d-flex text-center">
+            <main role="main" className="col-lg-12 ml-auto mr-auto" style={{ maxWidth: '500px' }}>
               <div className="content mr-auto ml-auto">
-                <a
-                  href="http://www.dappuniversity.com/bootcamp"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <img src={logo} className="App-logo" alt="logo" />
-                </a>
-                <h1>Dapp University Starter Kit</h1>
-                <p>
-                  Edit <code>src/components/App.js</code> and save to reload.
-                </p>
-                <a
-                  className="App-link"
-                  href="http://www.dappuniversity.com/bootcamp"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  LEARN BLOCKCHAIN <u><b>NOW! </b></u>
-                </a>
+                { this.state.posts.map((post, key) => {
+                  return(
+
+                    <div className="card mb-4" key={key} >
+                      <div className="card-header">
+                        <img
+                          className='mr-2'
+                          width='30'
+                          height='30'
+                          src={`data:image/png;base64,${new Identicon(this.state.account, 30).toString()}`}
+                         />
+                        <small className="text-muted">{post.author}</small>
+                      </div>
+                      <ul id="postList" className="list-group list-group-flush">
+                        <li className="list-group-item">
+                          <p>{post.content}</p>
+                        </li>
+                        <li key={key} className="list-group-item py-2">
+                          <small className="float-left mt-1 text-muted">
+                            TIPS: {window.web3.utils.fromWei(post.tipAmount.toString(), 'Ether')} ETH
+                          </small>
+                          <button className="btn btn-link btn-sm float-right pt-0">
+                            <span>
+                              TIP 0.1 ETH
+                            </span>
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
+
+                  )
+                })}
               </div>
             </main>
           </div>
