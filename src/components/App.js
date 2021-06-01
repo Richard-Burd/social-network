@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import Web3 from 'web3'; // this is the thing that is deprecated
 import Identicon from 'identicon.js';
 import './App.css';
-import SocialNetwork from '../abis/SocialNetwork.json'
-import Navbar from './Navbar'
+import SocialNetwork from '../abis/SocialNetwork.json';
+import Navbar from './Navbar';
 import Main from './Main'
 
 class App extends Component {
@@ -39,7 +39,7 @@ class App extends Component {
     if (networkData){
       // console.log(networkId)
       const socialNetwork = web3.eth.Contract(SocialNetwork.abi, networkData.address)
-      //console.log(socialNetwork)
+      // console.log(socialNetwork)
       this.setState({ socialNetwork })  // ES6 shortcut for key: value that are the same: socialNetwork: socialNetwork
       const postCount = await socialNetwork.methods.postCount().call()
       this.setState({ postCount })
